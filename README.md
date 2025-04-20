@@ -43,7 +43,7 @@ The classification is then hashed using SHA-256 to generate a cryptographic proo
 ## Running the Application
 
 Prerequisites:
-- Python 3.x
+- Python 3.10
 - Flask
 - An Azure Form Recognizer resource with endpoint access
 - Properly configured Azure credentials in your environment (used by `DefaultAzureCredential`)
