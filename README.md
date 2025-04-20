@@ -1,46 +1,40 @@
 # Microsoft-Hackathon
 
-# 🔐 Zero-Knowledge Age Verifier using Flask + Azure Form Recognizer
+# Zero-Knowledge Age Verification using Flask and Azure Form Recognizer
 
-## 📘 Overview
+## Overview
 
-This project is a **privacy-preserving age verification system** that leverages AI and cryptographic techniques.
+This project demonstrates a privacy-preserving age verification system built using Flask and Microsoft Azure's Form Recognizer service. The core idea is to verify whether a person is over 18 years old without exposing or storing their actual date of birth.
 
-Instead of storing or exposing a person's **Date of Birth (DOB)**, it uses a simulated **Zero-Knowledge Proof (ZKP)** to confirm if the person is **over 18** — without ever revealing their actual DOB. This concept is crucial in building systems that protect sensitive user data while still enabling verifiable claims.
-
----
-
-## 💡 Concept
-
-> "Can you prove you're over 18 **without** telling me your birthday?"
-
-The app accepts an image of an identity document (like a passport or license), uses **Azure Form Recognizer** to extract structured fields (like DOB), calculates the age, and returns a hashed proof of the statement:
-
-- "Over 18"
-- or
-- "Under 18"
-
-This hash acts as a **proof** of the claim. In a production-grade setup, this can be integrated with blockchain or digital ID platforms.
+The concept simulates a form of zero-knowledge proof (ZKP), where the user can prove a statement ("I am over 18") without revealing the underlying data (their exact birth date). This approach is particularly relevant in systems where data minimization and privacy compliance (e.g., GDPR) are priorities.
 
 ---
 
-## ⚙️ How It Works
+## How It Works
 
-1. User uploads an image/PDF of their ID document.
-2. The app uses Azure's `prebuilt-idDocument` model to extract fields.
-3. It isolates the `DateOfBirth` field.
-4. Calculates the current age (as of year 2025).
-5. Generates a **SHA256 hash** of the claim: `"Over 18"` or `"Under 18"`.
-6. Returns both the claim and its hashed proof in JSON format.
+1. The user uploads a scanned or photographed image of an official ID document (e.g., driver's license, passport).
+2. The application uses Azure’s `prebuilt-idDocument` model to extract structured data from the document, including the date of birth.
+3. It calculates the user’s age based on the current year (set to 2025 for this prototype).
+4. If the user is 18 or older, the claim `"Over 18"` is created. If not, the claim is `"Under 18"`.
+5. This claim is then hashed using the SHA-256 algorithm to create a verifiable cryptographic proof.
+6. The application returns both the claim and its hashed proof in the response.
+
+This allows external systems to trust the claim without accessing or storing the user's full date of birth.
 
 ---
 
-## 🚀 Running the App
+## API Endpoint
 
-Ensure you have:
-- Flask installed
-- Azure Form Recognizer endpoint set up
-- Azure credentials set via environment (for `DefaultAzureCredential`)
+### `POST /verify`
 
-```bash
-python app.py
+Accepts a form-data request containing an uploaded ID document file.
+
+**Form-data Parameters:**
+
+- `file`: Required. The image or PDF file of the ID document to be processed.
+
+---
+
+## Example Request
+
+**Form Data:**
